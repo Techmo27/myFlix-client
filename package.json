@@ -2,7 +2,7 @@
   "name": "myflix-client",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.jsx",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,6 +16,7 @@
     "url": "https://github.com/Techmo27/myFlix-client/issues"
   },
   "homepage": "https://github.com/Techmo27/myFlix-client#readme",
+  "entry": "src/index.html",
   "dependencies": {
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
