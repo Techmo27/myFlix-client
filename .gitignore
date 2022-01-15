@@ -1,3 +1,6 @@
 node_modules
 .cache
 .parcel-cache
+package-lock.json
+package.json
+src/components/main-view/main-view.jsx
