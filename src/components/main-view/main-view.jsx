@@ -5,6 +5,8 @@ import { LoginView } from '../login-view/login-view';
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
 
+import { Container, Col, Row, Navbar, Nav } from 'react-bootstrap';
+
 export class MainView extends React.Component {
 
   constructor() {
@@ -63,16 +65,33 @@ export class MainView extends React.Component {
     if (movies.length === 0) return <div className="main-view" />;
 
     return (
-      <div className="main-view">
-        {
-        /*If the state of `selectedMovie` is not null, that selected movie will be returned otherwise, all *movies will be returned*/}
-        {selectedMovie
-          ? <MovieView movie={selectedMovie} onBackClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie); }} />
-          : movies.map(movie => (
-            <MovieCard key={movie._id} movie={movie} onMovieClick={(newSelectedMovie) => { this.setSelectedMovie(newSelectedMovie) }} />
-          ))
-        }
-      </div>
+      <>
+        <Navbar expand="lg" bg="dark" variant="dark" className="loginNavbar">
+          <Container fluid>
+            <Navbar.Brand href="#myflix">My Flix</Navbar.Brand>
+            <Nav className="me-auto">
+              <Nav.Link href="#profile">Movies</Nav.Link>
+              <Nav.Link href="#update-profile">My Favorites</Nav.Link>
+              <Nav.Link href="#logout">Account</Nav.Link>
+            </Nav>
+          </Container>
+        </Navbar>
+
+        <Row className="main-view justify-content-md-center">
+          {selectedMovie
+            ? (
+              <Col xs={12} sm={6} md={6} lg={4}>
+                <MovieView movie={selectedMovie} onBackClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie); }} />
+              </Col>
+            )
+            : movies.map(movie => (
+              <Col xs={12} sm={6} md={6} lg={4}>
+                <MovieCard key={movie._id} movie={movie} onMovieClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie); }} />
+              </Col>
+            ))
+          }
+        </Row>
+      </>
     );
   }
 }
