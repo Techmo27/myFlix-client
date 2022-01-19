@@ -24,11 +24,6 @@ export function RegistrationView(props) {
       <Navbar expand="sm" bg="dark" variant="dark" className="loginNavbar">
         <Container fluid>
           <Navbar.Brand href="#myflix">My Flix</Navbar.Brand>
-          <Nav className="me-auto">
-            <Nav.Link href="#movies">Movies</Nav.Link>
-            <Nav.Link href="#favorite-movies">My Favorites</Nav.Link>
-            <Nav.Link href="#profile">Account</Nav.Link>
-          </Nav>
         </Container>
       </Navbar>
 
