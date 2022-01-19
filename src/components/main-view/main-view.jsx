@@ -5,7 +5,7 @@ import { LoginView } from '../login-view/login-view';
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
 
-import { Container, Col, Row, Navbar, Nav } from 'react-bootstrap';
+import { Container, Col, Row, Navbar, Nav, Button } from 'react-bootstrap';
 
 export class MainView extends React.Component {
 
@@ -74,6 +74,14 @@ export class MainView extends React.Component {
     this.getMovies(authData.token);
   }
 
+  onLoggedOut() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    this.setState({
+      user: null
+    });
+  }
+
   render() {
     const { movies, selectedMovie, user, register } = this.state;
 
@@ -90,9 +98,9 @@ export class MainView extends React.Component {
           <Container fluid>
             <Navbar.Brand href="#myflix">My Flix</Navbar.Brand>
             <Nav className="me-auto">
-              <Nav.Link href="#profile">Movies</Nav.Link>
-              <Nav.Link href="#update-profile">My Favorites</Nav.Link>
-              <Nav.Link href="#logout">Account</Nav.Link>
+              <Nav.Link href="#profile">My Favorites</Nav.Link>
+              <Nav.Link href="#update-profile">My Account</Nav.Link>
+              <Button variant="info" onClick={() => { this.onLoggedOut() }}>Logout</Button>
             </Nav>
           </Container>
         </Navbar>
