@@ -18,16 +18,15 @@ export class MainView extends React.Component {
     };
   }
 
+  // Gets value of the token from localStorage. If token present, it means user is logged in.
   componentDidMount() {
-    axios.get('https://myflix-movie-app-ekaterina.herokuapp.com/movies')
-      .then(response => {
-        this.setState({
-          movies: response.data
-        });
-      })
-      .catch(error => {
-        console.log(error);
+    let accessToken = localStorage.getItem('token');
+    if (accessToken !== null) {
+      this.setState({
+        user: localStorage.getItem('user')
       });
+      this.getMovies(accessToken);
+    }
   }
 
   getMovies(token) {
