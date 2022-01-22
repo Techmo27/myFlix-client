@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Button, Col, Form, Row, Container, Card } from 'react-bootstrap';
-import './user-view.scss';
+import './profile-view.scss';
 
 export class ProfileView extends React.Component {
   constructor() {
