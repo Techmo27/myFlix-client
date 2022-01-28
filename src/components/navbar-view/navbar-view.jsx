@@ -20,7 +20,7 @@ export function NavbarView({ user }) {
             <Nav className="me-auto">
               {user ?
                 <>
-                  <Nav.Link href={'/users/${user}'}>{user}</Nav.Link>
+                  <Nav.Link href={`/users/${user}`}>{user}</Nav.Link>
                   <Button variant="link" onClick={onLoggedOut}>Logout</Button>
                 </>
                 :
