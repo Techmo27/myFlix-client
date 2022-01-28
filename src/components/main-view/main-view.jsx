@@ -5,15 +5,10 @@ import {
   Route,
   Routes,
 } from "react-router-dom";
-
-import { setMovies } from '../../actions/actions';
-
-
-import MoviesList from '../movies-list/movies-list';
-
 import { NavbarView } from "../navbar-view/navbar-view";
 import { RegistrationView } from "../registration-view/registration-view";
 import { LoginView } from "../login-view/login-view";
+import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
 import { DirectorView } from "../director-view/director-view";
 import { GenreView } from "../genre-view/genre-view";
@@ -21,22 +16,13 @@ import { ProfileView } from "../profile-view/profile-view";
 
 import { Container, Col, Row } from "react-bootstrap";
 
-class MainView extends React.Component {
+export class MainView extends React.Component {
   constructor() {
     super();
     this.state = {
-      user: null
+      user: null,
+      movies: [], // should have a starting value.
     };
-  }
-
-  componentDidMount() {
-    let accessToken = localStorage.getItem("token");
-    if (accessToken !== null) {
-      this.setState({
-        user: localStorage.getItem("user"),
-      });
-      this.getMovies(accessToken);
-    }
   }
 
   getMovies(token) {
@@ -45,13 +31,16 @@ class MainView extends React.Component {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        this.props.setMovies(response.data);
+        // Should set state here, props is only called when properties are passed to this component
+        // and nothing is being passed.
+        this.setState({ movies: response.data });
       })
       .catch(function (error) {
         console.log(error);
       });
   }
 
+  /* When a user successfully logs in, this function updates the `user` property in state to that *particular user*/
   onLoggedIn(authData) {
     console.log(authData);
     this.setState({
@@ -63,12 +52,21 @@ class MainView extends React.Component {
     this.getMovies(authData.token);
   }
 
+  // Gets value of the token from localStorage. If token present, it means user is logged in.
+  componentDidMount() {
+    let accessToken = localStorage.getItem("token");
+    if (accessToken !== null) {
+      this.setState({
+        user: localStorage.getItem("user"),
+      });
+      this.getMovies(accessToken);
+    }
+  }
 
   render() {
+    const { user, movies } = this.state;
 
-    let { movies } = this.props;
-    let { user } = this.state;
-
+    // This is an easier way of showing login and register page.
     if (!user) {
       return (
         <Router>
@@ -112,6 +110,7 @@ class MainView extends React.Component {
                   />
                 }
               />
+              {/* With the new react router you cant get match from here, you need to call a hook within the Movie View component. */}
               <Route
                 path="/movies/:movieId"
                 element={<MovieView movies={movies} />}
@@ -125,10 +124,27 @@ class MainView extends React.Component {
                 element={<GenreView movies={movies} />}
               />
 
+              {/* The below UserUpdate doesnt exist */}
+              {/* <Route
+                path={`/user-update/${user}`}
+                element={
+                      <UserUpdate
+                        user={user}
+                        onBackClick={() => history.goBack()}
+                      />}
+              /> */}
               <Route
                 index
                 path="/"
-                element={<MoviesList movies={movies} />}
+                element={
+                  <>
+                    {movies.map((m) => (
+                      <Col md={3} key={m._id}>
+                        <MovieCard movie={m} />
+                      </Col>
+                    ))}
+                  </>
+                }
               />
               <Route path="*" element={<div>Not found</div>} />
             </Routes>
@@ -138,9 +154,3 @@ class MainView extends React.Component {
     );
   }
 }
-
-let mapStateToProps = state => {
-  return { movies: state.movies }
-}
-
-export default connect(mapStateToProps, { setMovies })(MainView);
