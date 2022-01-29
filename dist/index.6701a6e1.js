@@ -946,6 +946,7 @@ var _reactDefault = parcelHelpers.interopDefault(_react);
 var _reactDom = require("react-dom");
 var _reactDomDefault = parcelHelpers.interopDefault(_reactDom);
 var _mainView = require("./components/main-view/main-view");
+var _mainViewDefault = parcelHelpers.interopDefault(_mainView);
 var _redux = require("redux");
 var _reactRedux = require("react-redux");
 var _reducers = require("./reducers/reducers");
@@ -963,7 +964,7 @@ class MyFlixApplication extends _reactDefault.default.Component {
                 lineNumber: 18
             },
             __self: this,
-            children: /*#__PURE__*/ _jsxRuntime.jsx(_mainView.MainView, {
+            children: /*#__PURE__*/ _jsxRuntime.jsx(_mainViewDefault.default, {
                 __source: {
                     fileName: "src/index.jsx",
                     lineNumber: 19
@@ -22759,6 +22760,7 @@ var _reactRedux = require("react-redux");
 var _reactRouterDom = require("react-router-dom");
 var _actions = require("../../actions/actions");
 var _moviesList = require("../movies-list/movies-list");
+var _moviesListDefault = parcelHelpers.interopDefault(_moviesList);
 var _navbarView = require("../navbar-view/navbar-view");
 var _registrationView = require("../registration-view/registration-view");
 var _loginView = require("../login-view/login-view");
@@ -22947,7 +22949,7 @@ class MainView extends _reactDefault.default.Component {
                                     element: /*#__PURE__*/ _jsxRuntime.jsx(_jsxRuntime.Fragment, {
                                         children: movies.map((m)=>/*#__PURE__*/ _jsxRuntime.jsx(_reactBootstrap.Col, {
                                                 md: 3,
-                                                children: /*#__PURE__*/ _jsxRuntime.jsx(_moviesList.MoviesList, {
+                                                children: /*#__PURE__*/ _jsxRuntime.jsx(_moviesListDefault.default, {
                                                     movies: movies
                                                 })
                                             }, m._id)
@@ -42625,10 +42627,6 @@ function MoviesList(props) {
     return(/*#__PURE__*/ _jsxRuntime.jsxs(_jsxRuntime.Fragment, {
         children: [
             /*#__PURE__*/ _jsxRuntime.jsx(_colDefault.default, {
-                md: 12,
-                style: {
-                    margin: '1em'
-                },
                 __source: {
                     fileName: "src/components/movies-list/movies-list.jsx",
                     lineNumber: 24
@@ -42644,7 +42642,6 @@ function MoviesList(props) {
                 })
             }),
             filteredMovies.map((m)=>/*#__PURE__*/ _jsxRuntime.jsx(_colDefault.default, {
-                    md: 3,
                     __source: {
                         fileName: "src/components/movies-list/movies-list.jsx",
                         lineNumber: 28

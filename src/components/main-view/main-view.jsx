@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 
 import { setMovies } from '../../actions/actions';
-import { MoviesList } from '../movies-list/movies-list';
+import MoviesList from '../movies-list/movies-list';
 
 import { NavbarView } from "../navbar-view/navbar-view";
 import { RegistrationView } from "../registration-view/registration-view";
