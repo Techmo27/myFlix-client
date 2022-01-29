@@ -22,7 +22,7 @@ export function RegistrationView(props) {
       .then(response => {
         const data = response.data;
         console.log(data);
-        window.open('/', '_self'); // the second argument '_self' is necessary so that the page will open in the current tab
+        window.open('/', '_self');
       })
       .catch(e => {
         console.log('error registering the user')
@@ -32,9 +32,9 @@ export function RegistrationView(props) {
   return (
     <Container>
       <Row>
-        <Col xs={1} sm={1} md={2} lg={3} ></Col>
+        <Col xs={1} sm={1} md={2} lg={3}></Col>
         <Col>
-          <Card style={{ marginTop: 100, marginBottom: 50, maxWidth: '30rem' }}>
+          <Card style={{ marginTop: 100, marginBottom: 50, maxWidth: '40rem' }}>
             <Card.Body>
               <Card.Title style={{ textAlign: 'center', fontSize: '2rem' }}>Create a New Account</Card.Title>
               <Form.Group>
@@ -61,7 +61,7 @@ export function RegistrationView(props) {
             </Card.Body>
           </Card>
         </Col>
-        <Col xs={1} sm={1} md={2} lg={3} ></Col>
+        <Col xs={1} sm={1} md={2} lg={3}></Col>
       </Row>
     </Container>
   );

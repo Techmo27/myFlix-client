@@ -38,7 +38,7 @@ export function DirectorView(props) {
                 <span className="label">Death: </span>
                 <span className="value">{Director.Death}</span>
               </div>
-              <NavLink style={{ marginTop: 20 }} to={`/movies/${movie._id}`} className={"btn btn-danger"}>Back</NavLink>
+              <NavLink style={{ marginTop: 20 }} to={`/movies/${movie._id}`} className={"btn btn-info"}>Back</NavLink>
             </Card.Body>
           </Card>
         </Col>

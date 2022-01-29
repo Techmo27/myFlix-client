@@ -1,7 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-import { Container, Button } from 'react-bootstrap';
+import { Container, Card, Col, Row } from 'react-bootstrap';
 import { useParams, NavLink } from 'react-router-dom';
 
 export function MovieView(props) {
@@ -16,30 +15,42 @@ export function MovieView(props) {
   }
 
   return (
-    <Container style={{ marginTop: 20, width: 500 }}>
-      <div className="movie-view">
-        <div className="movie-poster">
-          <img src={movie.ImagePath} />
-        </div>
-        <div className="movie-title">
-          <span className="label">Title: </span>
-          <span className="value">{movie.Title}</span>
-        </div>
-        <div className="movie-description">
-          <span className="label">Description: </span>
-          <span className="value">{movie.Description}</span>
-        </div>
-        <div className='mt-3'>
-          <NavLink className={"btn btn-danger"} to={"/"}>Back</NavLink>
+    <Container>
+      <Row>
+        <Col xs={1} sm={1} md={2} lg={3} ></Col>
+        <Col>
+          <Card style={{ marginTop: 100, marginBottom: 50, maxWidth: '70rem' }}>
+            <Card.Body>
+              <Card.Title style={{ textAlign: 'center', fontSize: '2rem' }}>{movie.Title}</Card.Title>
+              <div className="movie-view">
+                <div className="movie-poster">
+                  <img src={movie.ImagePath} />
+                </div>
+                <div className="movie-title">
+                  <span className="label">Title: </span>
+                  <span className="value">{movie.Title}</span>
+                </div>
+                <div className="movie-description">
+                  <span className="label">Description: </span>
+                  <span className="value">{movie.Description}</span>
+                </div>
+                <div className='mt-3'>
+                  <NavLink style={{ marginRight: 10 }} className={"btn btn-dark"} to={"/"}>Back</NavLink>
 
-          <NavLink className={"btn btn-danger"} to={`/directors/${movie.Director.Name}`}>Director
-          </NavLink>
+                  <NavLink style={{ marginRight: 10 }} className={"btn btn-info"} to={`/directors/${movie.Director.Name}`}>Director
+                  </NavLink>
 
-          <NavLink to={`/genres/${movie.Genre.Name}`} className={"btn btn-danger"}>
-            Genre
-          </NavLink>
-        </div>
-      </div>
+                  <NavLink style={{ marginRight: 10 }} to={`/genres/${movie.Genre.Name}`} className={"btn btn-info"}>
+                    Genre
+                  </NavLink>
+                </div>
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col xs={1} sm={1} md={2} lg={3} >
+        </Col>
+      </Row>
     </Container>
 
   );

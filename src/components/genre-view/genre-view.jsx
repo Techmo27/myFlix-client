@@ -30,7 +30,7 @@ export function GenreView(props) {
                 <span className="label">Description: </span>
                 <span className="value">{Genre.Description}</span>
               </div>
-              <NavLink to={`/movies/${movie._id}`} style={{ marginTop: 20 }} className={"btn btn-danger"}>Back</NavLink>
+              <NavLink to={`/movies/${movie._id}`} style={{ marginTop: 20 }} className={"btn btn-info"}>Back</NavLink>
             </Card.Body>
           </Card>
         </Col>

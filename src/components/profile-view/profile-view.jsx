@@ -133,8 +133,8 @@ export function ProfileView(props) {
     <Container className="profile-view">
       <Row>
         <Col>
-          <Card>
-            <Card.Title>My Profile</Card.Title>
+          <Card style={{ marginTop: 50 }}>
+            <Card.Title style={{ padding: 20 }}>My Profile</Card.Title>
             <Card.Body>
               <div>
                 <span className="label">Username: </span>
@@ -153,7 +153,7 @@ export function ProfileView(props) {
 
       <Row>
         <Col>
-          <Card className="profile-update">
+          <Card style={{ marginTop: 50 }}>
             <Card.Body>
               <Card.Title>Update Profile</Card.Title>
               <Form
@@ -207,8 +207,8 @@ export function ProfileView(props) {
                 </Form.Group>
                 <br />
                 <div className="bt">
-                  <Button variant="info" type="submit">Update Profile</Button>
-                  <Button className="delete-button" variant="danger" onClick={onDeleteUser}>Delete Profile</Button>
+                  <Button variant="info" type="submit" style={{ marginRight: 10 }}>Update Profile</Button>
+                  <Button className="delete-button" style={{ marginRight: 10 }} variant="dark" onClick={onDeleteUser}>Delete Profile</Button>
                 </div>
               </Form>
             </Card.Body>
@@ -218,9 +218,9 @@ export function ProfileView(props) {
 
       <Row>
         <Col>
-          <Card>
-            <Card.Title>My Favorite Movies</Card.Title>
-            <Card.Body>
+          <Card style={{ marginTop: 50, marginBottom: 100 }}>
+            <Card.Title style={{ padding: 20 }}>My Favorite Movies</Card.Title>
+            <Card.Body style={{ padding: 20 }}>
               <Row className="favorite-container">
                 {favorites.length === 0 ? (
                   <div className="text-center">No Movies Added</div>
