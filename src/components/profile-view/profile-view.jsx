@@ -57,7 +57,6 @@ export function ProfileView(props) {
     )
       .then((response) => {
         alert("Movie successfully removed");
-        // props.getUser()
       })
       .catch(function (error) {
         console.log(error);
@@ -232,7 +231,7 @@ export function ProfileView(props) {
                         variant="top"
                         src={movie.ImagePath}
                       />
-                      <Card.Body style={{ backgroundColor: "black" }}>
+                      <Card.Body>
                         <Card.Title className="movie_title">
                           {movie.Title}
                         </Card.Title>
