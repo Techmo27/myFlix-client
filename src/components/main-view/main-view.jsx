@@ -77,11 +77,8 @@ class MainView extends React.Component {
             <Route
               path="/register"
               element={
-                <Col lg={8} md={8}>
-                  <RegistrationView
-                    onRegistration={(user) => this.onRegistration(user)}
-                  />
-                </Col>
+                <RegistrationView
+                  onRegistration={(user) => this.onRegistration(user)} />
               }
             />
             <Route
@@ -131,10 +128,10 @@ class MainView extends React.Component {
                 path="/"
                 element={
                   <>
-                    {movies.map((m) => ( // map() function iterates through movies
-                      <Col md={3} key={m._id}> //key attribute helps React better distinguish between similar elements/ children
-                        <MoviesList movies={movies} /> // movies={movies} allows using movie data inside a child component as props
-                      </Col>
+                    {movies.map((m) => ( // map() function iterates through movies / key attribute helps React better distinguish between similar elements children
+                      <Col key={m._id}>
+                        <MoviesList movies={movies} />
+                      </Col> // movies={movies} allows using movie data inside a child component as props
                     ))}
                   </>
                 }
