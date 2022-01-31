@@ -21,9 +21,9 @@ import { ProfileView } from "../profile-view/profile-view";
 import { Container, Col, Row } from "react-bootstrap";
 
 class MainView extends React.Component {
-  constructor() {
-    super();
-    this.state = {
+  constructor() { // React uses constructor method to create the component - not yet displayed
+    super(); // calls the constructor of the parent class (extends React.component) - initializes this variable
+    this.state = { //MainView state is initialized with this state
       user: null,
     };
   }
@@ -44,7 +44,7 @@ class MainView extends React.Component {
   /* When a user successfully logs in, this function updates the `user` property in state to that *particular user*/
   onLoggedIn(authData) {
     console.log(authData);
-    this.setState({
+    this.setState({ // this.setState is a method which changes the current state to a new one
       user: authData.user.Username,
     });
 
@@ -53,9 +53,9 @@ class MainView extends React.Component {
     this.getMovies(authData.token);
   }
 
-  // Gets value of the token from localStorage. If token present, it means user is logged in.
+  // componentDidMount is executed right after render() - good for async tasks
   componentDidMount() {
-    let accessToken = localStorage.getItem("token");
+    let accessToken = localStorage.getItem("token");   // Gets value of the token from localStorage. If token present, it means user is logged in.
     if (accessToken !== null) {
       this.setState({
         user: localStorage.getItem("user"),
@@ -65,8 +65,8 @@ class MainView extends React.Component {
   }
 
   render() {
-    let { movies } = this.props;
-    let { user } = this.state;
+    let { movies } = this.props; // extracts movie data from this component
+    let { user } = this.state; // object destruction, a shortened form of let users = this.state.users
 
     // This is an easier way of showing login and register page.
     if (!user) {
@@ -88,7 +88,7 @@ class MainView extends React.Component {
               index
               path="/"
               element={
-                <LoginView onLoggedIn={(user) => this.onLoggedIn(user)} />
+                <LoginView onLoggedIn={(user) => this.onLoggedIn(user)} /> //method onLoggedIn is passed as a prop to LoginView: will update user state of MainView and will be called when user is logge in
               }
             />
           </Routes>
@@ -131,9 +131,9 @@ class MainView extends React.Component {
                 path="/"
                 element={
                   <>
-                    {movies.map((m) => (
-                      <Col md={3} key={m._id}>
-                        <MoviesList movies={movies} />
+                    {movies.map((m) => ( // map() function iterates through movies
+                      <Col md={3} key={m._id}> //key attribute helps React better distinguish between similar elements/ children
+                        <MoviesList movies={movies} /> // movies={movies} allows using movie data inside a child component as props
                       </Col>
                     ))}
                   </>
@@ -152,4 +152,5 @@ let mapStateToProps = state => {
   return { movies: state.movies }
 }
 
+// export exposes each of the items to other components/files
 export default connect(mapStateToProps, { setMovies })(MainView);

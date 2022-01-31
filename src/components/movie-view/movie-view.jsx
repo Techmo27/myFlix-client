@@ -6,10 +6,11 @@ import { useParams, NavLink } from 'react-router-dom';
 export function MovieView(props) {
 
   const { movieId } = useParams()
-  const { movies } = props;
+  const { movies } = props; // MovieView will use all properties in the movies object which are passed as a prop here(Title, Description...)
 
   const movie = movies.find(movie => movie._id == movieId);
 
+  // if no movies in movie state, then return: Movie not found. Otherwise return movie content
   if (!movie) {
     return <div>Movie not found</div>
   }
