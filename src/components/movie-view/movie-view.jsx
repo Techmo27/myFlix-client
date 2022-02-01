@@ -8,7 +8,7 @@ export function MovieView(props) {
   const { movieId } = useParams()
   const { movies } = props; // MovieView will use all properties in the movies object which are passed as a prop here(Title, Description...)
 
-  const movie = movies.find(movie => movie._id == movieId);
+  const movie = movies.find(movie => movie._id == movieId); //loops through the movies array (using the find() method) and compare the m. id from your database  with movie id from the URL bar
 
   // if no movies in movie state, then return: Movie not found. Otherwise return movie content
   if (!movie) {

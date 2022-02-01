@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { connect } from 'react-redux';
 import {
-  BrowserRouter as Router,
+  BrowserRouter as Router, // BrowserRouter component is used to implement state-based routing
   Route,
   Routes,
 } from "react-router-dom";
@@ -28,12 +28,14 @@ class MainView extends React.Component {
     };
   }
 
+  // this method is called in two cases: log in and reload of page
+  // places get request to movies endpoint to retreive requested information while sending bearer token
   getMovies(token) {
     axios
       .get("https://myflix-movie-app-ekaterina.herokuapp.com/movies", {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token}` }, // authenticated request to movies endpoint
       })
-      .then((response) => {
+      .then((response) => { // extracts data from received response?
         this.props.setMovies(response.data);
       })
       .catch(function (error) {
@@ -41,23 +43,24 @@ class MainView extends React.Component {
       });
   }
 
-  /* When a user successfully logs in, this function updates the `user` property in state to that *particular user*/
+  /* When a user successfully logs in, this function updates state with logged in authData (username + token)*/
   onLoggedIn(authData) {
     console.log(authData);
     this.setState({ // this.setState is a method which changes the current state to a new one
-      user: authData.user.Username,
+      user: authData.user.Username, // username is saved in the user state
     });
 
-    localStorage.setItem("token", authData.token);
+    localStorage.setItem("token", authData.token); // saves auth data in local storage
     localStorage.setItem("user", authData.user.Username);
-    this.getMovies(authData.token);
+    this.getMovies(authData.token); // mainViews get.Movies method is called
   }
 
   // componentDidMount is executed right after render() - good for async tasks
+  // every time a user loads the page, this method is called and checks if the user is logged in
   componentDidMount() {
-    let accessToken = localStorage.getItem("token");   // Gets value of the token from localStorage. If token present, it means user is logged in.
-    if (accessToken !== null) {
-      this.setState({
+    let accessToken = localStorage.getItem("token");   // Gets value of the token from localStorage
+    if (accessToken !== null) { // if token present, the user is logged in and the getMovies method is called
+      this.setState({ //changes state with user from local storage
         user: localStorage.getItem("user"),
       });
       this.getMovies(accessToken);
@@ -94,6 +97,9 @@ class MainView extends React.Component {
     }
 
     return (
+      // routing consists of reacting to the URL and setting apps state accordingly
+      // State and URL become looped, so any state change should be reflected in the URL
+      // now routes are used to navigate to different views
       <Router>
         <NavbarView user={user} />
         <Container>

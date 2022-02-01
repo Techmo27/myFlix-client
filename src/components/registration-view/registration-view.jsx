@@ -32,7 +32,7 @@ export function RegistrationView(props) {
   return (
     <Container>
       <Row>
-        <Col xs={1} sm={1} md={2} lg={3}></Col>
+        <Col xs={1} sm={1} md={4} lg={6}></Col>
         <Col>
           <Card style={{ marginTop: 100, marginBottom: 50, maxWidth: '40rem' }}>
             <Card.Body>
@@ -61,7 +61,7 @@ export function RegistrationView(props) {
             </Card.Body>
           </Card>
         </Col>
-        <Col xs={1} sm={1} md={2} lg={3}></Col>
+        <Col xs={1} sm={1} md={4} lg={6}></Col>
       </Row>
     </Container>
   );

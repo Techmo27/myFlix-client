@@ -5,6 +5,7 @@ import { Outlet } from 'react-router-dom';
 
 export function NavbarView({ user }) {
 
+  //method deletes token and user from localStorage
   const onLoggedOut = () => {
     localStorage.clear();
     window.open("/", "_self");

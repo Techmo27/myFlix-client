@@ -22776,6 +22776,8 @@ class MainView extends _reactDefault.default.Component {
             user: null
         };
     }
+    // this method is called in two cases: log in and reload of page
+    // places get request to movies endpoint to retreive requested information while sending bearer token
     getMovies(token) {
         _axiosDefault.default.get("https://myflix-movie-app-ekaterina.herokuapp.com/movies", {
             headers: {
@@ -22787,18 +22789,19 @@ class MainView extends _reactDefault.default.Component {
             console.log(error);
         });
     }
-    /* When a user successfully logs in, this function updates the `user` property in state to that *particular user*/ onLoggedIn(authData) {
+    /* When a user successfully logs in, this function updates state with logged in authData (username + token)*/ onLoggedIn(authData) {
         console.log(authData);
         this.setState({
             user: authData.user.Username
         });
-        localStorage.setItem("token", authData.token);
+        localStorage.setItem("token", authData.token); // saves auth data in local storage
         localStorage.setItem("user", authData.user.Username);
-        this.getMovies(authData.token);
+        this.getMovies(authData.token); // mainViews get.Movies method is called
     }
     // componentDidMount is executed right after render() - good for async tasks
+    // every time a user loads the page, this method is called and checks if the user is logged in
     componentDidMount() {
-        let accessToken = localStorage.getItem("token"); // Gets value of the token from localStorage. If token present, it means user is logged in.
+        let accessToken = localStorage.getItem("token"); // Gets value of the token from localStorage
         if (accessToken !== null) {
             this.setState({
                 user: localStorage.getItem("user")
@@ -22813,21 +22816,21 @@ class MainView extends _reactDefault.default.Component {
         if (!user) return(/*#__PURE__*/ _jsxRuntime.jsxs(_reactRouterDom.BrowserRouter, {
             __source: {
                 fileName: "src/components/main-view/main-view.jsx",
-                lineNumber: 74
+                lineNumber: 77
             },
             __self: this,
             children: [
                 /*#__PURE__*/ _jsxRuntime.jsx(_navbarView.NavbarView, {
                     __source: {
                         fileName: "src/components/main-view/main-view.jsx",
-                        lineNumber: 75
+                        lineNumber: 78
                     },
                     __self: this
                 }),
                 /*#__PURE__*/ _jsxRuntime.jsxs(_reactRouterDom.Routes, {
                     __source: {
                         fileName: "src/components/main-view/main-view.jsx",
-                        lineNumber: 76
+                        lineNumber: 79
                     },
                     __self: this,
                     children: [
@@ -22838,7 +22841,7 @@ class MainView extends _reactDefault.default.Component {
                             }),
                             __source: {
                                 fileName: "src/components/main-view/main-view.jsx",
-                                lineNumber: 77
+                                lineNumber: 80
                             },
                             __self: this
                         }),
@@ -22851,7 +22854,7 @@ class MainView extends _reactDefault.default.Component {
                             ,
                             __source: {
                                 fileName: "src/components/main-view/main-view.jsx",
-                                lineNumber: 84
+                                lineNumber: 87
                             },
                             __self: this
                         })
@@ -22859,10 +22862,13 @@ class MainView extends _reactDefault.default.Component {
                 })
             ]
         }));
-        return(/*#__PURE__*/ _jsxRuntime.jsxs(_reactRouterDom.BrowserRouter, {
+        return(// routing consists of reacting to the URL and setting apps state accordingly
+        // State and URL become looped, so any state change should be reflected in the URL
+        // now routes are used to navigate to different views
+        /*#__PURE__*/ _jsxRuntime.jsxs(_reactRouterDom.BrowserRouter, {
             __source: {
                 fileName: "src/components/main-view/main-view.jsx",
-                lineNumber: 97
+                lineNumber: 103
             },
             __self: this,
             children: [
@@ -22870,27 +22876,27 @@ class MainView extends _reactDefault.default.Component {
                     user: user,
                     __source: {
                         fileName: "src/components/main-view/main-view.jsx",
-                        lineNumber: 98
+                        lineNumber: 104
                     },
                     __self: this
                 }),
                 /*#__PURE__*/ _jsxRuntime.jsx(_reactBootstrap.Container, {
                     __source: {
                         fileName: "src/components/main-view/main-view.jsx",
-                        lineNumber: 99
+                        lineNumber: 105
                     },
                     __self: this,
                     children: /*#__PURE__*/ _jsxRuntime.jsx(_reactBootstrap.Row, {
                         className: "main-view justify-content-md-center",
                         __source: {
                             fileName: "src/components/main-view/main-view.jsx",
-                            lineNumber: 100
+                            lineNumber: 106
                         },
                         __self: this,
                         children: /*#__PURE__*/ _jsxRuntime.jsxs(_reactRouterDom.Routes, {
                             __source: {
                                 fileName: "src/components/main-view/main-view.jsx",
-                                lineNumber: 101
+                                lineNumber: 107
                             },
                             __self: this,
                             children: [
@@ -22903,7 +22909,7 @@ class MainView extends _reactDefault.default.Component {
                                     }),
                                     __source: {
                                         fileName: "src/components/main-view/main-view.jsx",
-                                        lineNumber: 102
+                                        lineNumber: 108
                                     },
                                     __self: this
                                 }),
@@ -22914,7 +22920,7 @@ class MainView extends _reactDefault.default.Component {
                                     }),
                                     __source: {
                                         fileName: "src/components/main-view/main-view.jsx",
-                                        lineNumber: 113
+                                        lineNumber: 119
                                     },
                                     __self: this
                                 }),
@@ -22925,7 +22931,7 @@ class MainView extends _reactDefault.default.Component {
                                     }),
                                     __source: {
                                         fileName: "src/components/main-view/main-view.jsx",
-                                        lineNumber: 117
+                                        lineNumber: 123
                                     },
                                     __self: this
                                 }),
@@ -22936,7 +22942,7 @@ class MainView extends _reactDefault.default.Component {
                                     }),
                                     __source: {
                                         fileName: "src/components/main-view/main-view.jsx",
-                                        lineNumber: 121
+                                        lineNumber: 127
                                     },
                                     __self: this
                                 }),
@@ -22953,7 +22959,7 @@ class MainView extends _reactDefault.default.Component {
                                     }),
                                     __source: {
                                         fileName: "src/components/main-view/main-view.jsx",
-                                        lineNumber: 126
+                                        lineNumber: 132
                                     },
                                     __self: this
                                 }),
@@ -22964,7 +22970,7 @@ class MainView extends _reactDefault.default.Component {
                                     }),
                                     __source: {
                                         fileName: "src/components/main-view/main-view.jsx",
-                                        lineNumber: 139
+                                        lineNumber: 145
                                     },
                                     __self: this
                                 })
@@ -40578,6 +40584,7 @@ var _reactDefault = parcelHelpers.interopDefault(_react);
 var _reactBootstrap = require("react-bootstrap");
 var _reactRouterDom = require("react-router-dom");
 function NavbarView({ user  }) {
+    //method deletes token and user from localStorage
     const onLoggedOut = ()=>{
         localStorage.clear();
         window.open("/", "_self");
@@ -40592,14 +40599,14 @@ function NavbarView({ user  }) {
                 className: "loginNavbar",
                 __source: {
                     fileName: "src/components/navbar-view/navbar-view.jsx",
-                    lineNumber: 15
+                    lineNumber: 16
                 },
                 __self: this,
                 children: /*#__PURE__*/ _jsxRuntime.jsxs(_reactBootstrap.Container, {
                     fluid: true,
                     __source: {
                         fileName: "src/components/navbar-view/navbar-view.jsx",
-                        lineNumber: 16
+                        lineNumber: 17
                     },
                     __self: this,
                     children: [
@@ -40608,7 +40615,7 @@ function NavbarView({ user  }) {
                             href: "/",
                             __source: {
                                 fileName: "src/components/navbar-view/navbar-view.jsx",
-                                lineNumber: 17
+                                lineNumber: 18
                             },
                             __self: this,
                             children: "My Flix"
@@ -40617,7 +40624,7 @@ function NavbarView({ user  }) {
                             "aria-controls": "responsive-navbar",
                             __source: {
                                 fileName: "src/components/navbar-view/navbar-view.jsx",
-                                lineNumber: 18
+                                lineNumber: 19
                             },
                             __self: this
                         }),
@@ -40625,14 +40632,14 @@ function NavbarView({ user  }) {
                             id: "responsive-navbar",
                             __source: {
                                 fileName: "src/components/navbar-view/navbar-view.jsx",
-                                lineNumber: 19
+                                lineNumber: 20
                             },
                             __self: this,
                             children: /*#__PURE__*/ _jsxRuntime.jsx(_reactBootstrap.Nav, {
                                 className: "me-auto",
                                 __source: {
                                     fileName: "src/components/navbar-view/navbar-view.jsx",
-                                    lineNumber: 20
+                                    lineNumber: 21
                                 },
                                 __self: this,
                                 children: user ? /*#__PURE__*/ _jsxRuntime.jsxs(_jsxRuntime.Fragment, {
@@ -40641,7 +40648,7 @@ function NavbarView({ user  }) {
                                             href: `/users/${user}`,
                                             __source: {
                                                 fileName: "src/components/navbar-view/navbar-view.jsx",
-                                                lineNumber: 23
+                                                lineNumber: 24
                                             },
                                             __self: this,
                                             children: user
@@ -40651,7 +40658,7 @@ function NavbarView({ user  }) {
                                             onClick: onLoggedOut,
                                             __source: {
                                                 fileName: "src/components/navbar-view/navbar-view.jsx",
-                                                lineNumber: 24
+                                                lineNumber: 25
                                             },
                                             __self: this,
                                             children: "Logout"
@@ -40663,7 +40670,7 @@ function NavbarView({ user  }) {
                                             href: "/",
                                             __source: {
                                                 fileName: "src/components/navbar-view/navbar-view.jsx",
-                                                lineNumber: 28
+                                                lineNumber: 29
                                             },
                                             __self: this,
                                             children: "Sign-In"
@@ -40672,7 +40679,7 @@ function NavbarView({ user  }) {
                                             href: "/register",
                                             __source: {
                                                 fileName: "src/components/navbar-view/navbar-view.jsx",
-                                                lineNumber: 29
+                                                lineNumber: 30
                                             },
                                             __self: this,
                                             children: "Sign-Up"
@@ -40687,7 +40694,7 @@ function NavbarView({ user  }) {
             /*#__PURE__*/ _jsxRuntime.jsx(_reactRouterDom.Outlet, {
                 __source: {
                     fileName: "src/components/navbar-view/navbar-view.jsx",
-                    lineNumber: 36
+                    lineNumber: 37
                 },
                 __self: this
             })
@@ -40761,8 +40768,8 @@ function RegistrationView(props) {
                 /*#__PURE__*/ _jsxRuntime.jsx(_reactBootstrap.Col, {
                     xs: 1,
                     sm: 1,
-                    md: 2,
-                    lg: 3,
+                    md: 4,
+                    lg: 6,
                     __source: {
                         fileName: "src/components/registration-view/registration-view.jsx",
                         lineNumber: 35
@@ -40942,8 +40949,8 @@ function RegistrationView(props) {
                 /*#__PURE__*/ _jsxRuntime.jsx(_reactBootstrap.Col, {
                     xs: 1,
                     sm: 1,
-                    md: 2,
-                    lg: 3,
+                    md: 4,
+                    lg: 6,
                     __source: {
                         fileName: "src/components/registration-view/registration-view.jsx",
                         lineNumber: 64
@@ -40994,9 +41001,9 @@ var _reactBootstrap = require("react-bootstrap");
 var _s = $RefreshSig$();
 function LoginView(props) {
     _s();
-    const [username, setUsername] = _react.useState('');
-    const [password, setPassword] = _react.useState('');
-    const [usernameErr, setUsernameErr] = _react.useState('');
+    const [username, setUsername] = _react.useState(''); // 1. useState is a Hook, allows to use state from a class c. in a funct. c.
+    const [password, setPassword] = _react.useState(''); // 2. here the value '' is assigned to password variable and a method that updates the password (setPassword)
+    const [usernameErr, setUsernameErr] = _react.useState(''); // 3. useState creates a local state and preserves it between render cycles
     const [passwordErr, setPasswordErr] = _react.useState('');
     const validate = ()=>{
         let isReq = true;
@@ -41017,15 +41024,16 @@ function LoginView(props) {
         return isReq;
     };
     const handleSubmit = (e)=>{
-        e.preventDefault();
+        e.preventDefault(); // prevets default refresh of page upon clicking submit
         const isReq = validate();
         console.log("ok: ", isReq);
-        if (isReq) /* Send request to the server for authentication */ _axiosDefault.default.post('https://myflix-movie-app-ekaterina.herokuapp.com/login', {
+        if (isReq) /* post request made to login endpoint by passing u & p*/ _axiosDefault.default.post('https://myflix-movie-app-ekaterina.herokuapp.com/login', {
             Username: username,
             Password: password
-        }).then((response)=>{
+        }) //server checks the user’s login details against the database & sends response as well as token
+        .then((response)=>{
             const data = response.data;
-            props.onLoggedIn(data);
+            props.onLoggedIn(data); // allows a user with the matched response data (username and token) to be logged in
         }).catch((e1)=>{
             console.log('no such user');
         });
@@ -41065,7 +41073,7 @@ function LoginView(props) {
                         style: {
                             marginTop: 100,
                             marginBottom: 50,
-                            maxWidth: '20rem'
+                            maxWidth: '30rem'
                         },
                         __source: {
                             fileName: "src/components/login-view/login-view.jsx",
@@ -41248,7 +41256,7 @@ function MovieView(props) {
     const { movieId  } = _reactRouterDom.useParams();
     const { movies  } = props; // MovieView will use all properties in the movies object which are passed as a prop here(Title, Description...)
     const movie = movies.find((movie1)=>movie1._id == movieId
-    );
+    ); //loops through the movies array (using the find() method) and compare the m. id from your database  with movie id from the URL bar
     // if no movies in movie state, then return: Movie not found. Otherwise return movie content
     if (!movie) return(/*#__PURE__*/ _jsxRuntime.jsx("div", {
         __source: {
