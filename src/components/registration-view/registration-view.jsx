@@ -10,6 +10,30 @@ export function RegistrationView(props) {
   const [email, setEmail] = useState('');
   const [birthday, setBirthday] = useState('');
 
+  /*const [error, setError] = useState('');
+
+
+  const [user, setUser] = useState({
+    Username: [],
+    Password: [],
+    Email: [],
+    Birthday: [],
+    FavoriteMovies: [],
+  })
+
+  function onChange(e) {
+    setUser(prevState => ({ ...prevState, [e.target.name]: e.target.value }))
+    isValid(e.target.name, e.target.value)
+  }
+
+  function isValid(name, value) {
+    setError('')
+    if (name === 'Username' && value.length < 5) {
+      setError('The Username must be at least 5 characters long')
+    }
+    else if (name === 'Password' && value.length < 8)
+    return true
+  }*/
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -31,6 +55,7 @@ export function RegistrationView(props) {
 
   return (
     <Container>
+      {error.length > 0 && <div>{error}</div>}
       <Row>
         <Col xs={1} sm={1} md={4} lg={6}></Col>
         <Col>
@@ -39,7 +64,7 @@ export function RegistrationView(props) {
               <Card.Title style={{ textAlign: 'center', fontSize: '2rem' }}>Create a New Account</Card.Title>
               <Form.Group>
                 <Form.Label>Username:</Form.Label>
-                <Form.Control type="text" placeholder="Enter a username" value={username} onChange={e => setUsername(e.target.value)} />
+                <Form.Control type="text" placeholder="Enter a username" name={'Username'} value={user.Username} onChange={onChange} />
               </Form.Group>
 
               <Form.Group>

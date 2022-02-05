@@ -120,6 +120,7 @@ class MainView extends React.Component {
                 path="/movies/:movieId"
                 element={<MovieView movies={movies} />}
               />
+
               <Route
                 path="/directors/:name"
                 element={<DirectorView movies={movies} />}
