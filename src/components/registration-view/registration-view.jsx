@@ -10,52 +10,62 @@ export function RegistrationView(props) {
   const [email, setEmail] = useState('');
   const [birthday, setBirthday] = useState('');
 
-  /*const [error, setError] = useState('');
+  const [usernameErr, setUsernameErr] = useState('');
+  const [passwordErr, setPasswordErr] = useState('');
+  const [emailErrr, setEmailErr] = useState('');
 
+  const validate = () => {
+    let isReq = true;
 
-  const [user, setUser] = useState({
-    Username: [],
-    Password: [],
-    Email: [],
-    Birthday: [],
-    FavoriteMovies: [],
-  })
-
-  function onChange(e) {
-    setUser(prevState => ({ ...prevState, [e.target.name]: e.target.value }))
-    isValid(e.target.name, e.target.value)
-  }
-
-  function isValid(name, value) {
-    setError('')
-    if (name === 'Username' && value.length < 5) {
-      setError('The Username must be at least 5 characters long')
+    if (!username) {
+      setUsernameErr('Username Required');
+      isReq = false;
+    } else if (username.length < 5) {
+      setUsernameErr('Username not valid');
+      isReq = false;
     }
-    else if (name === 'Password' && value.length < 8)
-    return true
-  }*/
+
+    if (!password) {
+      setPasswordErr('Password is Required');
+      isReq = false;
+    } else if (password.length < 8) {
+      setPasswordErr('Password not valid');
+      isReq = false;
+    }
+
+    if (!email) {
+      setEmailErr('Email is required');
+      isReq = false;
+    } else if (email.indexOf('@') === -1) {
+      setEmailErr('Email is not valid');
+      isReq = false;
+    }
+    return isReq;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('https://myflix-movie-app-ekaterina.herokuapp.com/users', {
-      Username: username,
-      Password: password,
-      Email: email,
-      Birthday: birthday
-    })
-      .then(response => {
-        const data = response.data;
-        console.log(data);
-        window.open('/', '_self');
+    const isReq = validate();
+    if (isReq) {
+      axios.post('https://myflix-movie-app-ekaterina.herokuapp.com/users', {
+        Username: username,
+        Password: password,
+        Email: email,
+        Birthday: birthday
       })
-      .catch(e => {
-        console.log('error registering the user')
-      });
+        .then(response => {
+          const data = response.data;
+          console.log(data);
+          window.open('/', '_self');
+        })
+        .catch(e => {
+          console.log('error registering the user')
+        });
+    }
   };
 
   return (
     <Container>
-      {error.length > 0 && <div>{error}</div>}
       <Row>
         <Col xs={1} sm={1} md={4} lg={6}></Col>
         <Col>
@@ -64,12 +74,14 @@ export function RegistrationView(props) {
               <Card.Title style={{ textAlign: 'center', fontSize: '2rem' }}>Create a New Account</Card.Title>
               <Form.Group>
                 <Form.Label>Username:</Form.Label>
-                <Form.Control type="text" placeholder="Enter a username" name={'Username'} value={user.Username} onChange={onChange} />
+                <Form.Control type="text" placeholder="Enter a username" name={'Username'} value={user.Username} onChange={e => setUsername(e.target.value)} />
+                {usernameErr && <p className="valClass">{usernameErr}</p>}
               </Form.Group>
 
               <Form.Group>
                 <Form.Label>Password:</Form.Label>
                 <Form.Control type="password" placeholder="Enter a password" value={password} onChange={e => setPassword(e.target.value)} />
+                {passwordErr && <p className="valClass">{passwordErr}</p>}
               </Form.Group>
 
               <Form.Group>
@@ -80,6 +92,7 @@ export function RegistrationView(props) {
               <Form.Group>
                 <Form.Label>Birthday:</Form.Label>
                 <Form.Control type="date" placeholder="Enter your birthday(optional)" value={birthday} onChange={e => setBirthday(e.target.value)} />
+                {emailErrr && <p className="valClass">{emailErrr}</p>}
               </Form.Group>
 
               <Button style={{ marginTop: 10 }} variant="info" type="submit" onClick={handleSubmit}>Register</Button>
@@ -93,10 +106,5 @@ export function RegistrationView(props) {
 }
 
 RegistrationView.propTypes = {
-  register: PropTypes.shape({
-    username: PropTypes.string.isRequired,
-    password: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired,
-  }),
   onRegistration: PropTypes.func.isRequired,
 };
