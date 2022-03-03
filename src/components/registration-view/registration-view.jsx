@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import axios from "axios"
+import axios from 'axios';
 import { Form, Button, Card, Container, Col, Row } from 'react-bootstrap';
 import './registration-view.scss';
 
-export function RegistrationView(props) {
+export function RegistrationView() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -28,7 +28,7 @@ export function RegistrationView(props) {
     if (!password) {
       setPasswordErr('Password is Required');
       isReq = false;
-    } else if (password.length < 8) {
+    } else if (password.length < 5) {
       setPasswordErr('Password not valid');
       isReq = false;
     }
@@ -67,14 +67,14 @@ export function RegistrationView(props) {
   return (
     <Container>
       <Row>
-        <Col xs={1} sm={1} md={4} lg={6}></Col>
+        <Col xs={1} sm={1} md={2} lg={3}></Col>
         <Col>
           <Card style={{ marginTop: 100, marginBottom: 50, maxWidth: '40rem' }}>
             <Card.Body>
               <Card.Title style={{ textAlign: 'center', fontSize: '2rem' }}>Create a New Account</Card.Title>
               <Form.Group>
                 <Form.Label>Username:</Form.Label>
-                <Form.Control type="text" placeholder="Enter a username" name={'Username'} value={user.Username} onChange={e => setUsername(e.target.value)} />
+                <Form.Control type="text" placeholder="Enter a username" value={username} onChange={e => setUsername(e.target.value)} />
                 {usernameErr && <p className="valClass">{usernameErr}</p>}
               </Form.Group>
 
@@ -99,12 +99,17 @@ export function RegistrationView(props) {
             </Card.Body>
           </Card>
         </Col>
-        <Col xs={1} sm={1} md={4} lg={6}></Col>
+        <Col xs={1} sm={1} md={2} lg={3}></Col>
       </Row>
     </Container>
   );
 }
 
 RegistrationView.propTypes = {
-  onRegistration: PropTypes.func.isRequired,
+  registration: PropTypes.shape({
+    username: PropTypes.string.isRequired,
+    password: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+  }),
+  onRegistration: PropTypes.func.isRequired
 };

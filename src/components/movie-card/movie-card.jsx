@@ -4,7 +4,9 @@ import { Button, Card } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 
 export function MovieCard(props) {
+
   const { movie } = props; //extracts movie data from parent, which the component is about to use
+
   return (
     <Card style={{ marginTop: 20, marginBottom: 20, maxWidth: '30rem', minHeight: '15rem' }}>
       <Card.Img variant="top" src={movie.ImagePath} />
