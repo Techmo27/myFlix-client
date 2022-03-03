@@ -1,97 +1,160 @@
-import React from 'react';
-import axios from 'axios';
-import { RegistrationView } from '../registration-view/registration-view';
-import { LoginView } from '../login-view/login-view';
-import { MovieCard } from '../movie-card/movie-card';
-import { MovieView } from '../movie-view/movie-view';
+import React from "react";
+import axios from "axios";
+import { connect } from 'react-redux';
+import {
+  BrowserRouter as Router, // BrowserRouter component is used to implement state-based routing
+  Route,
+  Routes,
+} from "react-router-dom";
 
-import { Container, Col, Row, Navbar, Nav } from 'react-bootstrap';
+import { setMovies } from '../../actions/actions';
+import MoviesList from '../movies-list/movies-list';
 
-export class MainView extends React.Component {
+import { NavbarView } from "../navbar-view/navbar-view";
+import { RegistrationView } from "../registration-view/registration-view";
+import { LoginView } from "../login-view/login-view";
+import { MovieView } from "../movie-view/movie-view";
+import { DirectorView } from "../director-view/director-view";
+import { GenreView } from "../genre-view/genre-view";
+import { ProfileView } from "../profile-view/profile-view";
 
-  constructor() {
-    super();
-    this.state = {
-      movies: [],
-      selectedMovie: null,
-      user: null
+import { Container, Col, Row } from "react-bootstrap";
+
+class MainView extends React.Component {
+  constructor() { // React uses constructor method to create the component - not yet displayed
+    super(); // calls the constructor of the parent class (extends React.component) - initializes this variable
+    this.state = { //MainView state is initialized with this state
+      user: null,
     };
   }
 
-  componentDidMount() {
-    axios.get('https://myflix-movie-app-ekaterina.herokuapp.com/movies')
-      .then(response => {
-        this.setState({
-          movies: response.data
-        });
+  // this method is called in two cases: log in and reload of page
+  // places get request to movies endpoint to retreive requested information while sending bearer token
+  getMovies(token) {
+    axios
+      .get("https://myflix-movie-app-ekaterina.herokuapp.com/movies", {
+        headers: { Authorization: `Bearer ${token}` }, // authenticated request to movies endpoint
       })
-      .catch(error => {
+      .then((response) => { // extracts data from received response?
+        this.props.setMovies(response.data);
+      })
+      .catch(function (error) {
         console.log(error);
       });
   }
 
-  /*When a movie is clicked, this function is invoked and updates the state of the `selectedMovie` *property to that movie*/
-
-  setSelectedMovie(newSelectedMovie) {
-    this.setState({
-      selectedMovie: newSelectedMovie
+  /* When a user successfully logs in, this function updates state with logged in authData (username + token)*/
+  onLoggedIn(authData) {
+    console.log(authData);
+    this.setState({ // this.setState is a method which changes the current state to a new one
+      user: authData.user.Username, // username is saved in the user state
     });
+
+    localStorage.setItem("token", authData.token); // saves auth data in local storage
+    localStorage.setItem("user", authData.user.Username);
+    this.getMovies(authData.token); // mainViews get.Movies method is called
   }
 
-  /* When a user successfully registers, this function is triggered and updates the "register" property */
-
-  onRegistration(register) {
-    this.setState({
-      register
-    });
-  }
-
-  /* When a user successfully logs in, this function updates the `user` property in state to that *particular user*/
-
-  onLoggedIn(user) {
-    this.setState({
-      user
-    });
+  // componentDidMount is executed right after render() - good for async tasks
+  // every time a user loads the page, this method is called and checks if the user is logged in
+  componentDidMount() {
+    let accessToken = localStorage.getItem("token");   // Gets value of the token from localStorage
+    if (accessToken !== null) { // if token present, the user is logged in and the getMovies method is called
+      this.setState({ //changes state with user from local storage
+        user: localStorage.getItem("user"),
+      });
+      this.getMovies(accessToken);
+    }
   }
 
   render() {
-    const { movies, selectedMovie, user, register } = this.state;
+    let { movies } = this.props; // extracts movie data from this component
+    let { user } = this.state; // object destruction, a shortened form of let users = this.state.users
 
-    if (!register) return <RegistrationView onRegistration={register => this.onRegistration(register)} />;
-
-    /* If there is no user, the LoginView is rendered. If there is a user logged in, the user details are *passed as a prop to the LoginView*/
-    if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
-
-    if (movies.length === 0) return <div className="main-view" />;
+    // This is an easier way of showing login and register page.
+    if (!user) {
+      return (
+        <Router>
+          <NavbarView />
+          <Routes>
+            <Route
+              path="/register"
+              element={
+                <RegistrationView
+                  onRegistration={(user) => this.onRegistration(user)} />
+              }
+            />
+            <Route
+              index
+              path="/"
+              element={
+                <LoginView onLoggedIn={(user) => this.onLoggedIn(user)} /> //method onLoggedIn is passed as a prop to LoginView: will update user state of MainView and will be called when user is logge in
+              }
+            />
+          </Routes>
+        </Router>
+      );
+    }
 
     return (
-      <>
-        <Navbar expand="lg" bg="dark" variant="dark" className="loginNavbar">
-          <Container fluid>
-            <Navbar.Brand href="#myflix">My Flix</Navbar.Brand>
-            <Nav className="me-auto">
-              <Nav.Link href="#profile">Movies</Nav.Link>
-              <Nav.Link href="#update-profile">My Favorites</Nav.Link>
-              <Nav.Link href="#logout">Account</Nav.Link>
-            </Nav>
-          </Container>
-        </Navbar>
+      // routing consists of reacting to the URL and setting apps state accordingly
+      // State and URL become looped, so any state change should be reflected in the URL
+      // now routes are used to navigate to different views
+      <Router>
+        <NavbarView user={user} />
+        <Container>
+          <Row className="main-view justify-content-md-center">
+            <Routes>
+              <Route
+                path="/users/:user"
+                element={
+                  <ProfileView
+                    movies={movies}
+                    user={user}
+                    onBackClick={() => history.goBack()}
+                  />
+                }
+              />
+              {/* With the new react router you cant get match from here, you need to call a hook within the Movie View component. */}
+              <Route
+                path="/movies/:movieId"
+                element={<MovieView movies={movies} />}
+              />
 
-        <Row className="main-view justify-content-md-center">
-          {selectedMovie
-            ? (
-              <Col xs={12} sm={6} md={6} lg={4}>
-                <MovieView movie={selectedMovie} onBackClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie); }} />
-              </Col>
-            )
-            : movies.map(movie => (
-              <Col xs={12} sm={6} md={6} lg={4}>
-                <MovieCard key={movie._id} movie={movie} onMovieClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie); }} />
-              </Col>
-            ))
-          }
-        </Row>
-      </>
+              <Route
+                path="/directors/:name"
+                element={<DirectorView movies={movies} />}
+              />
+              <Route
+                path="/genres/:name"
+                element={<GenreView movies={movies} />}
+              />
+
+              <Route
+                index
+                path="/"
+                element={
+                  <>
+                    {movies.map((m) => ( // map() function iterates through movies / key attribute helps React better distinguish between similar elements children
+                      <Col key={m._id}>
+                        <MoviesList movies={movies} />
+                      </Col> // movies={movies} allows using movie data inside a child component as props
+                    ))}
+                  </>
+                }
+              />
+              <Route path="*" element={<div>Not found</div>} />
+            </Routes>
+          </Row>
+        </Container>
+      </Router>
     );
   }
 }
+
+let mapStateToProps = state => {
+  return { movies: state.movies }
+}
+
+// export exposes each of the items to other components/files
+export default connect(mapStateToProps, { setMovies })(MainView);

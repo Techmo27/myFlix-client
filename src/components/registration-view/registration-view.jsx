@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Button, Card, CardGroup, Container, Col, Row, Navbar, Nav } from 'react-bootstrap';
-
+import axios from "axios"
+import { Form, Button, Card, Container, Col, Row } from 'react-bootstrap';
 import './registration-view.scss';
 
 export function RegistrationView(props) {
@@ -10,65 +10,98 @@ export function RegistrationView(props) {
   const [email, setEmail] = useState('');
   const [birthday, setBirthday] = useState('');
 
+  const [usernameErr, setUsernameErr] = useState('');
+  const [passwordErr, setPasswordErr] = useState('');
+  const [emailErrr, setEmailErr] = useState('');
+
+  const validate = () => {
+    let isReq = true;
+
+    if (!username) {
+      setUsernameErr('Username Required');
+      isReq = false;
+    } else if (username.length < 5) {
+      setUsernameErr('Username not valid');
+      isReq = false;
+    }
+
+    if (!password) {
+      setPasswordErr('Password is Required');
+      isReq = false;
+    } else if (password.length < 8) {
+      setPasswordErr('Password not valid');
+      isReq = false;
+    }
+
+    if (!email) {
+      setEmailErr('Email is required');
+      isReq = false;
+    } else if (email.indexOf('@') === -1) {
+      setEmailErr('Email is not valid');
+      isReq = false;
+    }
+    return isReq;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(username, password, email, birthday);
-    /* Send a request to the server for authentication */
-    /* then call props.onLoggedIn(username) */
-    props.onRegistration(username);
+    const isReq = validate();
+    if (isReq) {
+      axios.post('https://myflix-movie-app-ekaterina.herokuapp.com/users', {
+        Username: username,
+        Password: password,
+        Email: email,
+        Birthday: birthday
+      })
+        .then(response => {
+          const data = response.data;
+          console.log(data);
+          window.open('/', '_self');
+        })
+        .catch(e => {
+          console.log('error registering the user')
+        });
+    }
   };
 
   return (
-    <>
-      <Navbar expand="sm" bg="dark" variant="dark" className="loginNavbar">
-        <Container fluid>
-          <Navbar.Brand href="#myflix">My Flix</Navbar.Brand>
-          <Nav className="me-auto">
-            <Nav.Link href="#movies">Movies</Nav.Link>
-            <Nav.Link href="#favorite-movies">My Favorites</Nav.Link>
-            <Nav.Link href="#profile">Account</Nav.Link>
-          </Nav>
-        </Container>
-      </Navbar>
+    <Container>
+      <Row>
+        <Col xs={1} sm={1} md={4} lg={6}></Col>
+        <Col>
+          <Card style={{ marginTop: 100, marginBottom: 50, maxWidth: '40rem' }}>
+            <Card.Body>
+              <Card.Title style={{ textAlign: 'center', fontSize: '2rem' }}>Create a New Account</Card.Title>
+              <Form.Group>
+                <Form.Label>Username:</Form.Label>
+                <Form.Control type="text" placeholder="Enter a username" name={'Username'} value={user.Username} onChange={e => setUsername(e.target.value)} />
+                {usernameErr && <p className="valClass">{usernameErr}</p>}
+              </Form.Group>
 
-      <Container >
-        <Row>
-          <Col xs={1} sm={1} md={2} lg={3} ></Col>
-          <Col>
-            <Card style={{ marginTop: 100, marginBottom: 50, maxWidth: '30rem' }}>
-              <Card.Body>
-                <Card.Title style={{ textAlign: 'center', fontSize: '2rem' }}>Create a New Account</Card.Title>
-                <Form>
-                  <Form.Group>
-                    <Form.Label>Username:</Form.Label>
-                    <Form.Control type="text" placeholder="Enter a username" value={username} onChange={e => setUsername(e.target.value)} />
-                  </Form.Group>
+              <Form.Group>
+                <Form.Label>Password:</Form.Label>
+                <Form.Control type="password" placeholder="Enter a password" value={password} onChange={e => setPassword(e.target.value)} />
+                {passwordErr && <p className="valClass">{passwordErr}</p>}
+              </Form.Group>
 
-                  <Form.Group>
-                    <Form.Label>Password:</Form.Label>
-                    <Form.Control type="password" placeholder="Enter a password" value={password} onChange={e => setPassword(e.target.value)} />
-                  </Form.Group>
+              <Form.Group>
+                <Form.Label>Email:</Form.Label>
+                <Form.Control type="email" placeholder="Enter your email address" value={email} onChange={e => setEmail(e.target.value)} />
+              </Form.Group>
 
-                  <Form.Group>
-                    <Form.Label>Email:</Form.Label>
-                    <Form.Control type="email" placeholder="Enter your email address" value={email} onChange={e => setEmail(e.target.value)} />
-                  </Form.Group>
+              <Form.Group>
+                <Form.Label>Birthday:</Form.Label>
+                <Form.Control type="date" placeholder="Enter your birthday(optional)" value={birthday} onChange={e => setBirthday(e.target.value)} />
+                {emailErrr && <p className="valClass">{emailErrr}</p>}
+              </Form.Group>
 
-                  <Form.Group>
-                    <Form.Label>Birthday:</Form.Label>
-                    <Form.Control type="date" placeholder="Enter your birthday(optional)" value={birthday} onChange={e => setBirthday(e.target.value)} />
-                  </Form.Group>
-
-                  <Button style={{ marginTop: 10 }} variant="info" type="submit" onClick={handleSubmit}>Register</Button>
-                </Form>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col xs={1} sm={1} md={2} lg={3} ></Col>
-        </Row>
-      </Container>
-    </>
+              <Button style={{ marginTop: 10 }} variant="info" type="submit" onClick={handleSubmit}>Register</Button>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col xs={1} sm={1} md={4} lg={6}></Col>
+      </Row>
+    </Container>
   );
 }
 
