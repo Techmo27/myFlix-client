@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+
 import { Container, Card, Col, Row, Button } from 'react-bootstrap';
 import { useParams, NavLink } from 'react-router-dom';
 
@@ -13,21 +13,6 @@ export function MovieView(props) {
   // if no movies in movie state, then return: Movie not found. Otherwise return movie content
   if (!movie) {
     return <div>Movie not found</div>
-  }
-
-
-  function onAddFavorite() {
-    const token = localStorage.getItem('token');
-
-    axios.post(`https://myflix-movie-app-ekaterina.herokuapp.com/users/${username}/favorites/${movie._id}`,
-      { headers: { Authorization: `Bearer ${token}` } }
-    )
-      .then((response) => {
-        alert("Movie successfully added");
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
   }
 
   return (
@@ -59,9 +44,6 @@ export function MovieView(props) {
                   <NavLink style={{ marginRight: 10 }} to={`/genres/${movie.Genre.Name}`} className={"btn btn-info"}>
                     Genre
                   </NavLink>
-                  <Button className="add-button" style={{ marginRight: 10 }} variant="danger" value={movie._id} onClick={onAddFavorite}>Add To Favorites
-                  </Button>
-
                 </div>
               </div>
             </Card.Body>
